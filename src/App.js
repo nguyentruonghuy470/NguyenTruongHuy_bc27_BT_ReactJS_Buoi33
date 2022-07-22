@@ -1,25 +1,39 @@
-import logo from './logo.svg';
+import React, { Component } from 'react';
 import './App.css';
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
-}
+import ShoesStore from '../src/BTVN_Props_Buoi33/ShoesStore';
+import ProductList from '../src/BTVN_Props_Buoi33/ProductList';
+import Modal from '../src/BTVN_Props_Buoi33/Modal';
+class App extends Component {
+  constructor(props) {
+    super(props);
 
+    this.state = {
+      isOpen: false,
+      selectedProduct: null,
+    };
+  }
+  modalHandle = () => {
+    this.setState((prevState) => ({ isOpen: !prevState.isOpen }));
+  };
+  handleSelect = (product) => {
+    this.modalHandle();
+    this.setState({  isOpen: true ,selectedProduct: product });
+  };
+
+  render() {
+    console.log(this.state);
+    return (
+      <ShoesStore>
+        <ProductList onShowDetail={this.handleSelect} />
+        {this.state.isOpen && (
+          <Modal
+            onClose={this.modalHandle}
+            content={this.state.selectedProduct}
+          />
+        )}
+      </ShoesStore>
+    );
+  }
+}
 export default App;
